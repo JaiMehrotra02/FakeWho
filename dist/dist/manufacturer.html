@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:400,300"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="row">
+      <h1>Register Product</h1>
+      <div class="col-md-12">
+        <form action="index.html" method="post">
+          <fieldset>
+            <legend><span class="number">1</span> Enter Product Details</legend>
+
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="user_name" />
+
+            <label for="Manufacturing Date">Manufacturing Date:</label>
+            <input type="number" id="mail" name="user_email" />
+
+            <label for="Manufacturer Address">Manufacturer Address:</label>
+            <input type="text" id="password" name="user_password" />
+
+          
+            <button type="submit">Register</button>
+          </fieldset>
+        </form>
+        <!-- <form>
+          <fieldset>
+            
+            
+          </fieldset>
+        </form> -->
+      </div>
+
+      <div class="gent">
+      <legend><span class="number">2</span> Generate QR Code</legend>
+
+      <label for="Product_ID">Product Id:</label>
+      <input type="text" id="text" name="user_bio" />
+      <button id="generateBtn">Generate QR Code</button>
+      <div class="center">
+      <div id="qrCode"></div>
+      <a
+        href="#"
+        class="btn btn-danger btn-lg"
+        id="downloadLink"
+        download="qrcode.png"
+        >Download</a>
+      </div>  
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#generateBtn").click(function () {
+          var text = $("#text").val();
+          if (text !== "") {
+            var apiUrl =
+              "https://api.qrserver.com/v1/create-qr-code/?data=" +
+              encodeURIComponent(text) +
+              "&size=200x200";
+            $("#qrCode").html('<img src="' + apiUrl + '" alt="QR Code">');
+            var img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = apiUrl;
+            img.onload = function () {
+              var canvas = document.createElement("canvas");
+              var ctx = canvas.getContext("2d");
+              canvas.width = this.naturalWidth;
+              canvas.height = this.naturalHeight;
+              ctx.drawImage(this, 0, 0);
+              var dataUrl = canvas.toDataURL("image/png");
+              $("#downloadLink")
+                .attr("href", dataUrl)
+                .attr("download", "qrcode.png")
+                .show();
+            };
+          } else {
+            $("#qrCode").text("Please enter some text");
+            $("#downloadLink").hide();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
